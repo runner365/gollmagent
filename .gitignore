@@ -1,0 +1,108 @@
+# === Go 语言通用忽略 ===
+# 1. 构建输出
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.exe
+go
+
+# 2. 依赖目录
+/vendor/        # 如果项目使用 Go Modules 且希望将 vendor 提交到仓库，请删除或注释此行
+/Godeps/
+
+# 3. IDE / 编辑器
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# 4. 操作系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 5. 日志 / 临时文件
+*.log
+*.tmp
+*.bak
+.tmp/
+*.pid
+*.seed
+*.pid.lock
+
+# 6. 环境 / 敏感文件
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+*.crt
+
+# 7. Go coverage & benchmark
+*.coverprofile
+coverage.out
+coverage.html
+cpu.prof
+mem.prof
+
+# 8. 其他常见文件
+*.tar.gz
+*.zip
+dist/
+build/
+bin/
+.release/
+.cache/
+
+gollmagent
+
+# 9. 媒体文件
+*.mp4
+*.mkv
+*.webm
+*.flv
+*.avi
+*.mov
+*.wmv
+*.mp3
+*.aac
+*.wav
+*.flac
+*.m4a
+
+# 10. 图片文件
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.tiff
+*.svg
+*.ico
+*.webp
+*.psd
+*.ai
+*.eps
+*.indd
+*.raw
+*.heic
+*.heif
+*.avif
+*.jfif
+*.apng
+*.tga
+*.pcx
+*.hdr
+*.exr
+*.3fr
+
+# 11. 字幕文件
+*.srt
+*.ass

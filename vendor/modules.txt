@@ -1,0 +1,15 @@
+# github.com/gomarkdown/markdown v0.0.0-20250311123330-531bef5e742b
+## explicit; go 1.12
+github.com/gomarkdown/markdown/ast
+github.com/gomarkdown/markdown/parser
+# github.com/google/uuid v1.1.2
+## explicit
+github.com/google/uuid
+# github.com/gorilla/websocket v1.5.3
+## explicit; go 1.12
+github.com/gorilla/websocket
+# github.com/tencentcloud/tencentcloud-speech-sdk-go v1.0.17
+## explicit; go 1.12
+github.com/tencentcloud/tencentcloud-speech-sdk-go/asr
+github.com/tencentcloud/tencentcloud-speech-sdk-go/common
+github.com/tencentcloud/tencentcloud-speech-sdk-go/tts
