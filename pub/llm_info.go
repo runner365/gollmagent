@@ -5,7 +5,6 @@ type ChatCompletionsInfo struct {
 	Messages   []ChatCompletionsMessage `json:"messages"`
 	Tools      []ToolDefinition         `json:"tools,omitempty"`       // 可选字段，支持工具调用
 	ToolChoice *ToolChoice              `json:"tool_choice,omitempty"` // 可选字段，控制工具调用行为
-
 }
 
 type Function func(args map[string]interface{}) interface{}

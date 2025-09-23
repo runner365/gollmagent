@@ -22,3 +22,9 @@ func EnsureDir(dirPath string) error {
 	}
 	return nil
 }
+
+// just check if file exists
+func FileExists(filePath string) bool {
+	_, err := os.Stat(filePath)
+	return !os.IsNotExist(err)
+}

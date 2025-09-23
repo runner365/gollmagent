@@ -37,6 +37,7 @@ func InitTools() string {
 	FunctionTools = append(FunctionTools, AddSrt2Video())
 	FunctionTools = append(FunctionTools, AddGenPictureFromVideoBasedOnIFrame())
 	FunctionTools = append(FunctionTools, AddScreenshotAtMomentTool())
+	FunctionTools = append(FunctionTools, AddM3U8ToMP4Tool())
 
 	var desc string
 	for _, tool := range FunctionTools {
@@ -201,6 +202,21 @@ func AddScreenshotAtMomentTool() *pub.ToolDefinition {
 		"required": []string{"input_file", "moment"},
 	}
 	tool := AddFunctionTool("screenshot_at_moment", "在指定时刻截取视频帧", screenshotAtMomentParams)
+	return tool
+}
+
+func AddM3U8ToMP4Tool() *pub.ToolDefinition {
+	m3u8ToMp4Params := map[string]interface{}{
+		"type": "object",
+		"properties": map[string]interface{}{
+			"input_m3u8": map[string]interface{}{
+				"type":        "string",
+				"description": "输入的m3u8文件路径",
+			},
+		},
+		"required": []string{"input_m3u8"},
+	}
+	tool := AddFunctionTool("m3u8_to_mp4", "将m3u8文件转换为mp4", m3u8ToMp4Params)
 	return tool
 }
 
@@ -674,6 +690,29 @@ func ScreenshotOnePictureAtMoment(args map[string]interface{}) interface{} {
 	return output
 }
 
+func MergeM3U8ToMP4(args map[string]interface{}) interface{} {
+	inputM3U8, ok := args["input_m3u8"].(string)
+	if !ok {
+		log.Errorf("invalid input_m3u8 arguments for MergeM3U8ToMP4: %+v", args)
+		return "invalid input_m3u8 arguments for MergeM3U8ToMP4"
+	}
+
+	if !utils.FileExists(inputM3U8) {
+		log.Errorf("input m3u8 file does not exist: %s", inputM3U8)
+		return fmt.Sprintf("input m3u8 file does not exist: %s", inputM3U8)
+	}
+
+	output := strings.TrimSuffix(inputM3U8, filepath.Ext(inputM3U8)) + "_merged.mp4"
+	log.Infof("Starting to merge m3u8 to mp4: %s, output:%s",
+		inputM3U8, output)
+	err := ffmpegcmd.MergeM3U8ToMP4(inputM3U8, output)
+	if err != nil {
+		log.Errorf("error merging m3u8 to mp4: %v", err)
+		return fmt.Sprintf("error merging m3u8 to mp4: %v", err)
+	}
+	return output
+}
+
 func CreateFunctionToolsHandler() {
 	functions = make(map[string]pub.Function)
 	functions["get_current_weather"] = GetWeather
@@ -688,4 +727,5 @@ func CreateFunctionToolsHandler() {
 	functions["srt_to_video"] = Srt2Video
 	functions["gen_pictures_from_video"] = GenPicturesFromVideoBaseOnIFrame
 	functions["screenshot_at_moment"] = ScreenshotOnePictureAtMoment
+	functions["m3u8_to_mp4"] = MergeM3U8ToMP4
 }
