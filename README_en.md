@@ -1,6 +1,6 @@
 # GollmAgent - FFmpeg AI Agent
 
-[English](#english) | [中文](README_cn.md)
+[English](#english) | [中文](README.md)
 
 ## English
 

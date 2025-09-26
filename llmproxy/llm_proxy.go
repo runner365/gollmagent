@@ -28,8 +28,8 @@ type VoiceAuthInfo struct {
 }
 
 type LLMProxy struct {
-	llmUrl	    string
-	model	   	string
+	llmUrl      string
+	model       string
 	llmSecKey   string
 	voiceAuth   *VoiceAuthInfo
 	messages    []pub.ChatCompletionsMessage
@@ -47,9 +47,9 @@ type LLMProxy struct {
 func NewLLMProxy(llmUrl string, model string, llmSecKey string, voiceAuth *VoiceAuthInfo) *LLMProxy {
 	log.Infof("Creating new LLMProxy instance with llmUrl: %s, model: %s", llmUrl, model)
 	ret := &LLMProxy{
-		llmUrl:     llmUrl,
+		llmUrl:      llmUrl,
 		model:       model,
-		llmSecKey:  llmSecKey,
+		llmSecKey:   llmSecKey,
 		voiceAuth:   voiceAuth,
 		voiceChann:  make(chan *pub.ChatVoiceInfo, kVoiceChannMax),
 		sendChann:   make(chan []byte, kSendBufferSize),
@@ -157,6 +157,7 @@ func (proxy *LLMProxy) getMessages() []pub.ChatCompletionsMessage {
 func (proxy *LLMProxy) ToolResultCompletions(text string, callId string) (*pub.ChatCompletionsResponse, error) {
 	secretKey := proxy.llmSecKey
 
+	log.Infof("ToolResultCompletions called with callId: %s, text: %s", callId, text)
 	isHttps, hostname, port, subpath, err := utils.ParseURL(proxy.llmUrl)
 	if err != nil {
 		log.Errorf("Failed to parse LLM URL: %v", err)
