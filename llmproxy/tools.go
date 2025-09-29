@@ -547,7 +547,7 @@ func ImageWatermark2Video(args map[string]interface{}) interface{} {
 		log.Errorf("error getting position: %v", err)
 		return "error getting position"
 	}
-	output := fmt.Sprintf("%s_watermarked.mp4", strings.TrimSuffix(filepath.Base(inputFile), filepath.Ext(inputFile)))
+	output := fmt.Sprintf("%s_watermarked.mp4", strings.TrimSuffix(inputFile, filepath.Ext(inputFile)))
 
 	log.Infof("Starting to add image watermark to video: %s, watermark:%s, position:%s, output:%s",
 		inputFile, watermarkFile, position, output)
@@ -678,7 +678,7 @@ func ScreenshotOnePictureAtMoment(args map[string]interface{}) interface{} {
 		return fmt.Sprintf("error getting time from moment: %v", err)
 	}
 
-	output := fmt.Sprintf("%s_screenshot_%02d_%02d_%02d.png", strings.TrimSuffix(filepath.Base(inputFile), filepath.Ext(inputFile)), hours, minutes, seconds)
+	output := fmt.Sprintf("%s_screenshot_%02d_%02d_%02d.png", strings.TrimSuffix(inputFile, filepath.Ext(inputFile)), hours, minutes, seconds)
 
 	log.Infof("Starting to screenshot one picture at moment: %s, moment:%s, output:%s",
 		inputFile, moment, output)
