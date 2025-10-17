@@ -19,7 +19,7 @@ var (
 	loglevel   = flag.String("loglevel", "info", "Log level :debug, info, warn, error, fatal.")
 	wsPort     = flag.Int("wsport", 8080, "WebSocket server port")
 	serverMode = flag.Bool("server", false, "Run in server mode")
-	llmType    = flag.String("llmtype", "huanbao", "LLM type: qwen, hunyuan")
+	llmType    = flag.String("llmtype", "yuanbao", "LLM type: qwen, yuanbao")
 )
 
 var supportedLLMTypes map[string]pub.LLMTypeInfo
@@ -40,8 +40,8 @@ func initSupportedLLMTypes() {
 		Url:     "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
 		Model:   "qwen-plus",
 	}
-	supportedLLMTypes["hunyuan"] = pub.LLMTypeInfo{
-		LLMType: "hunyuan",
+	supportedLLMTypes["yuanbao"] = pub.LLMTypeInfo{
+		LLMType: "yuanbao",
 		Url:     "https://api.hunyuan.cloud.tencent.com/v1/chat/completions",
 		Model:   "hunyuan-turbo",
 	}
