@@ -1,5 +1,11 @@
 package pub
 
+type LLMTypeInfo struct {
+	LLMType string
+	Url     string
+	Model   string
+}
+
 type ChatCompletionsInfo struct {
 	Model      string                   `json:"model"`
 	Messages   []ChatCompletionsMessage `json:"messages"`

@@ -6,36 +6,63 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gollmagent/ffmpegcmd"
+	"github.com/gollmagent/llmproxy"
 	log "github.com/gollmagent/logging"
 	"github.com/gollmagent/progressmgr"
+	"github.com/gollmagent/pub"
 	"github.com/gollmagent/websocket"
-	"github.com/gollmagent/llmproxy"
-	"github.com/gollmagent/ffmpegcmd"
 )
 
 var (
-	logfile   = flag.String("logfile", "server.log", "Log file path")
-	loglevel  = flag.String("loglevel", "info", "Log level :debug, info, warn, error, fatal.")
-	wsPort    = flag.Int("wsport", 8080, "WebSocket server port")
+	logfile    = flag.String("logfile", "server.log", "Log file path")
+	loglevel   = flag.String("loglevel", "info", "Log level :debug, info, warn, error, fatal.")
+	wsPort     = flag.Int("wsport", 8080, "WebSocket server port")
 	serverMode = flag.Bool("server", false, "Run in server mode")
+	llmType    = flag.String("llmtype", "huanbao", "LLM type: qwen, hunyuan")
 )
+
+var supportedLLMTypes map[string]pub.LLMTypeInfo
 
 func init() {
 	flag.Parse()
 	log.SetOutputByName(*logfile)
 	log.SetRotateByDay()
 	log.SetLevelByString(*loglevel)
+
+	initSupportedLLMTypes()
+}
+
+func initSupportedLLMTypes() {
+	supportedLLMTypes = make(map[string]pub.LLMTypeInfo)
+	supportedLLMTypes["qwen"] = pub.LLMTypeInfo{
+		LLMType: "qwen",
+		Url:     "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+		Model:   "qwen-plus",
+	}
+	supportedLLMTypes["hunyuan"] = pub.LLMTypeInfo{
+		LLMType: "hunyuan",
+		Url:     "https://api.hunyuan.cloud.tencent.com/v1/chat/completions",
+		Model:   "hunyuan-turbo",
+	}
 }
 
 func main() {
 	log.Infof("Starting gollmagent...")
+	for k, v := range supportedLLMTypes {
+		log.Infof("LLM Type: %s, Url: %s, Model: %s", k, v.Url, v.Model)
+	}
+	llmInfo, ok := supportedLLMTypes[*llmType]
+	if !ok {
+		fmt.Printf("Unsupported llmtype: %s\n", *llmType)
+		log.Fatalf("Unsupported llmtype: %s", *llmType)
+	}
 
 	// it's for qwen alibaba cloud, and it is required. you can change it if you use other llm service
-	llmUrl := "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions"
-	model := "qwen-plus"
-	// it's for hunyuan tencent cloud, and it is required. you can change it if you use other llm service
-	// llmUrl := "https://api.hunyuan.cloud.tencent.com/v1/chat/completions"
-	// model := "hunyuan-turbo"
+	llmUrl := llmInfo.Url
+	model := llmInfo.Model
+
+	log.Infof("Using LLM Type: %s, Url: %s, Model: %s", *llmType, llmUrl, model)
 
 	// LLM API Key is required for large language model access
 	llmSecKey := os.Getenv("LLM_API_KEY")
