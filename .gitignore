@@ -76,6 +76,10 @@ gollmagent
 *.wav
 *.flac
 *.m4a
+*.ogg
+*.wma
+*.pcm
+*.pcmu
 
 # 10. 图片文件
 *.jpg
